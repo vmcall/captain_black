@@ -15,6 +15,5 @@ namespace captain_black
 		captain_black::engine::actor* get_local_player() const;
 	private:
 		std::byte* m_base_address;
-		captain_black::engine::actor* m_local_actor;
 	};
 }
