@@ -142,7 +142,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="logger.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="cheat.hpp" />
     <ClInclude Include="engine.hpp" />
     <ClInclude Include="global.hpp" />
+    <ClInclude Include="keyboard_input.hpp" />
     <ClInclude Include="logger.hpp" />
     <ClInclude Include="native_thread.hpp" />
   </ItemGroup>

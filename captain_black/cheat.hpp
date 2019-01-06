@@ -1,8 +1,9 @@
 #pragma once
 #include <cstddef>
 #include "engine.hpp"
+#include "keyboard_input.hpp"
 
-namespace captain_black
+namespace bdo
 {
 	class cheat
 	{
@@ -12,8 +13,10 @@ namespace captain_black
 		void stop();
 
 		std::byte* get_base() const;
-		captain_black::engine::actor* get_local_player() const;
+		bdo::engine::actor* get_local_player() const;
 	private:
 		std::byte* m_base_address;
+		native::keyboard_input keyboard;
+
 	};
 }
