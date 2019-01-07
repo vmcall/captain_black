@@ -1,61 +1,10 @@
 #pragma once
-#include <cstdint>
-#include <map>
-#include <windows.h>
-#include "logger.hpp"
+
+#include "system_variable.hpp"
+#include <Windows.h>
 
 namespace bdo::engine
 {
-	constexpr auto speedcap_function_offset = 0x89E1A0;
-	constexpr auto local_actor_offset = 0x33AE948;
-
-	struct vector3d
-	{
-		float x;
-		float y;
-		float z;
-	};
-
-	struct actor
-	{
-		char pad_0000[104];					// 000
-		wchar_t* name;						// 068
-		char pad_0070[160];					// 070
-		vector3d position;					// 110
-		char pad_011C[2780];				// 11C
-		std::int32_t movement_speed;		// BF8
-		std::int32_t attack_speed;			// BFC
-		std::int32_t cast_speed;			// C00
-		char pad_0C04[2];					// C04
-		std::uint16_t movement_backwards;	// C06
-	};
-
-
-	enum type : std::uint8_t
-	{
-		t_int8,
-		t_int16,
-		t_int32,
-		t_int64,
-		t_float
-	};
-
-	struct member
-	{
-		std::uint64_t offset;
-		bdo::engine::type type;
-	};
-
-	using variable_array = std::map<std::string, member>;
-	struct system_variable
-	{
-		void* overload; // 0000
-		void* reserved; // 0008
-		void* value;	// 0010
-		char* name;		// 0018
-	};
-
-
 	struct pa_container
 	{
 		char pad_0000[0x110];			// 000
@@ -91,8 +40,4 @@ namespace bdo::engine
 		variable_array m_variables;
 		pa_container* m_container;
 	};
-
-
-
-
 }

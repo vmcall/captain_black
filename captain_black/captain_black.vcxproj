@@ -143,7 +143,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,17 +155,34 @@
   <ItemGroup>
     <ClCompile Include="cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="engine.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="logger.cpp" />
+    <ClCompile Include="Minhook\src\buffer.c" />
+    <ClCompile Include="Minhook\src\HDE\hde32.c" />
+    <ClCompile Include="Minhook\src\HDE\hde64.c" />
+    <ClCompile Include="Minhook\src\hook.c" />
+    <ClCompile Include="Minhook\src\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actor.hpp" />
+    <ClInclude Include="anticheat.hpp" />
     <ClInclude Include="cheat.hpp" />
-    <ClInclude Include="engine.hpp" />
     <ClInclude Include="global.hpp" />
     <ClInclude Include="keyboard_input.hpp" />
     <ClInclude Include="logger.hpp" />
+    <ClInclude Include="lua.hpp" />
+    <ClInclude Include="Minhook\include\MinHook.h" />
+    <ClInclude Include="Minhook\src\buffer.h" />
+    <ClInclude Include="Minhook\src\HDE\hde32.h" />
+    <ClInclude Include="Minhook\src\HDE\hde64.h" />
+    <ClInclude Include="Minhook\src\HDE\pstdint.h" />
+    <ClInclude Include="Minhook\src\HDE\table32.h" />
+    <ClInclude Include="Minhook\src\HDE\table64.h" />
+    <ClInclude Include="Minhook\src\trampoline.h" />
+    <ClInclude Include="misc.hpp" />
     <ClInclude Include="native_thread.hpp" />
+    <ClInclude Include="system_variable.hpp" />
+    <ClInclude Include="variable_container.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
