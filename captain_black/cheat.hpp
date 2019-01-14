@@ -3,6 +3,7 @@
 #include "actor.hpp"
 #include "keyboard_input.hpp"
 #include "lua.hpp"
+#include "command_helper.hpp"
 
 namespace bdo
 {
@@ -28,13 +29,15 @@ namespace bdo
 
 		
 		bdo::engine::lua&		lua();
+		bdo::engine::command_helper& command_helper();
 		native::keyboard_input& keyboard();
 
 
 	private:
-		std::byte*				m_base_address;
-		native::keyboard_input	m_keyboard;
-		bdo::engine::lua		m_lua;
+		std::byte*					m_base_address;
+		native::keyboard_input		m_keyboard;
+		bdo::engine::lua			m_lua;
+		bdo::engine::command_helper m_command_helper;
 
 	};
 }

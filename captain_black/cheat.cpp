@@ -38,16 +38,21 @@ void bdo::cheat::start()
 	// DO OBJECT PATCHES
 	this->handle_object_patches();
 
-	//logger::log("Overwriting SelfPlayerActorProxy->movement_speed");
-	//logger::log("Overwriting SelfPlayerActorProxy->attack_speed");
-	//logger::log("Overwriting SelfPlayerActorProxy->cast_speed");
-
+	logger::log("Overwriting SelfPlayerActorProxy->movement_speed");
+	logger::log("Overwriting SelfPlayerActorProxy->attack_speed");
+	logger::log("Overwriting SelfPlayerActorProxy->cast_speed");
 
 	// CHEAT LOOP
 	while (!this->keyboard().pressed(VK_END, false))
 	{
 		// HANDLE ITERATIVE PATCHES
 		this->handle_loop();
+
+		// TEST:
+		if (this->keyboard().pressed(VK_HOME, true))
+		{
+			global::run_lua_from_disk = true;
+		}
 
 		// SLEEP
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -74,8 +79,8 @@ void bdo::cheat::setup_hooks()
 	MH_Initialize();
 
 	// HOOK LUA::DOSTRING
-	MH_CreateHook(this->lua().do_string, bdo::global::do_string_hook, reinterpret_cast<void**>(&bdo::global::do_string_original));
-	MH_EnableHook(this->lua().do_string);
+	MH_CreateHook(this->lua().gettop, bdo::global::gettop_hook, reinterpret_cast<void**>(&bdo::global::gettop_original));
+	MH_EnableHook(this->lua().gettop);
 
 	logger::log("Hooked..!");
 }
@@ -83,7 +88,7 @@ void bdo::cheat::setup_hooks()
 void bdo::cheat::release_hooks()
 {
 	// UNHOOK LUA::DOSTRING
-	MH_DisableHook(this->lua().do_string);
+	MH_DisableHook(this->lua().gettop);
 }
 
 void bdo::cheat::handle_loop()
@@ -98,7 +103,7 @@ void bdo::cheat::handle_code_patches()
 
 	// XignCode::SPEEDCAP FORCES NORMAL-RANGE VALUES FOR SPEED MODIFIERS
 	auto speedcap_function = this->base() + bdo::anticheat::speedcap_function_offset;
-	logger::log_pointer("XignCode::SpeedHackCap", speedcap_function);
+	logger::log_pointer("game::cap_speed", speedcap_function);
 
 	// WRITE RET INSTRUCTION TO PATCH IT :')
 	constexpr auto ret_opcode = 0xC3;
@@ -111,7 +116,8 @@ void bdo::cheat::handle_object_patches()
 {
 	logger::log("Dumping ObjectSceneInfo...");
 
-	auto object_scene_info = bdo::engine::container_wrapper(reinterpret_cast<bdo::engine::pa_container*>(0x14320B170));
+	auto raw_container = reinterpret_cast<bdo::engine::pa_container*>(this->base() + 0x3210180);
+	auto object_scene_info = bdo::engine::container_wrapper(raw_container);
 
 	//for (auto entry : object_scene_info.variables())
 	//{
@@ -121,7 +127,16 @@ void bdo::cheat::handle_object_patches()
 	logger::log("Dumped..!");
 
 	logger::log("Patching ObjectSceneInfo->cam_maxDistanceFromCharacter");
+
+	// CAMERA DISTANCE
 	*object_scene_info.get<float>("cam_maxDistanceFromCharacter") = 999999.f;
+
+	// STEP HEIGHT
+	//*object_scene_info.get<float>("ch_stepOffset") = 9999.f;
+
+	// CLIFF LEAN
+	//*object_scene_info.get<float>("_cc_nearCliffCheckDistance") = 0.f;
+	
 }
 
 void bdo::cheat::handle_local_patches()
@@ -129,7 +144,7 @@ void bdo::cheat::handle_local_patches()
 	if (this->local_player())
 	{
 		// ATTACK SPEED, LIMITED TO NOT TIME OUT FOR ATTACKING TOO FAST :')
-		constexpr auto max_attack = 5999999;
+		constexpr auto max_attack = 9999999;
 		this->local_player()->attack_speed = max_attack;
 		this->local_player()->cast_speed = max_attack;
 
@@ -152,6 +167,11 @@ bdo::engine::actor* bdo::cheat::local_player()
 bdo::engine::lua& bdo::cheat::lua()
 {
 	return this->m_lua;
+}
+
+bdo::engine::command_helper& bdo::cheat::command_helper()
+{
+	return this->m_command_helper;
 }
 
 native::keyboard_input& bdo::cheat::keyboard()

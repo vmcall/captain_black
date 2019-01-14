@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cheat.cpp" />
+    <ClCompile Include="command_helper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="logger.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="actor.hpp" />
     <ClInclude Include="anticheat.hpp" />
     <ClInclude Include="cheat.hpp" />
+    <ClInclude Include="command_helper.hpp" />
     <ClInclude Include="global.hpp" />
     <ClInclude Include="keyboard_input.hpp" />
     <ClInclude Include="logger.hpp" />

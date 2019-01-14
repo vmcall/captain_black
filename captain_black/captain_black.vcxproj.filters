@@ -51,6 +51,9 @@
     <ClCompile Include="Minhook\src\HDE\hde64.c">
       <Filter>MinHook</Filter>
     </ClCompile>
+    <ClCompile Include="command_helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.hpp">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="anticheat.hpp">
       <Filter>Header Files\Anti-Cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="command_helper.hpp">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
