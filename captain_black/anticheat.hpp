@@ -2,7 +2,7 @@
 
 namespace bdo::anticheat
 {
-	constexpr auto speedcap_function_offset = 0x89DA30;
+	constexpr auto speedcap_function_offset = 0x8B50F0;
 
 
 }

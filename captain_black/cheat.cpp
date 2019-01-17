@@ -48,6 +48,12 @@ void bdo::cheat::start()
 		// HANDLE ITERATIVE PATCHES
 		this->handle_loop();
 
+		// LOOT ALL
+		//if (this->keyboard().pressed(VK_XBUTTON1, false))
+		//{
+		//	reinterpret_cast<void*(__fastcall*)()>(0x140649B10)();
+		//}
+
 		// TEST:
 		if (this->keyboard().pressed(VK_HOME, true))
 		{
@@ -55,7 +61,7 @@ void bdo::cheat::start()
 		}
 
 		// SLEEP
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	// RELEASE CHEAT
@@ -116,7 +122,8 @@ void bdo::cheat::handle_object_patches()
 {
 	logger::log("Dumping ObjectSceneInfo...");
 
-	auto raw_container = reinterpret_cast<bdo::engine::pa_container*>(this->base() + 0x3210180);
+	constexpr auto object_scene_info_offset = 0x3244370;
+	auto raw_container = reinterpret_cast<bdo::engine::pa_container*>(this->base() + object_scene_info_offset);
 	auto object_scene_info = bdo::engine::container_wrapper(raw_container);
 
 	//for (auto entry : object_scene_info.variables())

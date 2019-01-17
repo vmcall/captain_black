@@ -9,8 +9,8 @@ namespace bdo::engine
 	public:
 
 		// OFFSETS
-		static constexpr auto do_string_offset = 0xF00180;
-		static constexpr auto gettop_offset = 0x1730700;
+		static constexpr auto do_string_offset = 0xF23390;
+		static constexpr auto gettop_offset = 0x1755130;
 
 		explicit lua(std::uint64_t base_address) noexcept : m_base_address(base_address)
 		{

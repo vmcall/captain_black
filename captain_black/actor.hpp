@@ -7,7 +7,7 @@ namespace bdo::engine
 {
 	struct actor
 	{
-		static constexpr auto local_offset = 0x33B3AD8;
+		static constexpr auto local_offset = 0x33E4058;
 
 		char pad_0000[104];					// 000
 		wchar_t* name;						// 068
