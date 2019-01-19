@@ -30,13 +30,13 @@ void bdo::cheat::start()
 	logger::log_pointer("SelfPlayerActorProxy", this->local_player());
 
 	// SETUP HOOKS
-	this->setup_hooks();
+	//this->setup_hooks();
 
 	// DO CODE PATCHES
 	this->handle_code_patches();
 
-	// DO OBJECT PATCHES
-	this->handle_object_patches();
+	// DO FIELD EFFECT PATCHES
+	this->handle_field_effect_patches();
 
 	logger::log("Overwriting SelfPlayerActorProxy->movement_speed");
 	logger::log("Overwriting SelfPlayerActorProxy->attack_speed");
@@ -74,7 +74,7 @@ void bdo::cheat::stop()
 	logger::release();
 
 	// RELEASE HOOKS
-	this->release_hooks();
+	//this->release_hooks();
 }
 
 void bdo::cheat::setup_hooks()
@@ -118,13 +118,13 @@ void bdo::cheat::handle_code_patches()
 	logger::log("Patched..!");
 }
 
-void bdo::cheat::handle_object_patches()
+void bdo::cheat::handle_field_effect_patches()
 {
-	logger::log("Dumping ObjectSceneInfo...");
+	logger::log("Dumping FieldEffectInfo...");
 
-	constexpr auto object_scene_info_offset = 0x3244370;
-	auto raw_container = reinterpret_cast<bdo::engine::pa_container*>(this->base() + object_scene_info_offset);
-	auto object_scene_info = bdo::engine::container_wrapper(raw_container);
+	constexpr auto field_effect_info_offset = 0x3244370;
+	auto raw_container = reinterpret_cast<bdo::engine::pa_container*>(this->base() + field_effect_info_offset);
+	auto field_effect_info = bdo::engine::container_wrapper(raw_container);
 
 	//for (auto entry : object_scene_info.variables())
 	//{
@@ -136,10 +136,10 @@ void bdo::cheat::handle_object_patches()
 	logger::log("Patching ObjectSceneInfo->cam_maxDistanceFromCharacter");
 
 	// CAMERA DISTANCE
-	*object_scene_info.get<float>("cam_maxDistanceFromCharacter") = 999999.f;
+	*field_effect_info.get<float>("cam_maxDistanceFromCharacter") = 999999.f;
 
 	// STEP HEIGHT
-	//*object_scene_info.get<float>("ch_stepOffset") = 9999.f;
+	*field_effect_info.get<float>("ch_stepOffset") = 9999.f;
 
 	// CLIFF LEAN
 	//*object_scene_info.get<float>("_cc_nearCliffCheckDistance") = 0.f;
@@ -151,7 +151,7 @@ void bdo::cheat::handle_local_patches()
 	if (this->local_player())
 	{
 		// ATTACK SPEED, LIMITED TO NOT TIME OUT FOR ATTACKING TOO FAST :')
-		constexpr auto max_attack = 9999999;
+		constexpr auto max_attack = std::numeric_limits<std::int32_t>::max();// 9999999;
 		this->local_player()->attack_speed = max_attack;
 		this->local_player()->cast_speed = max_attack;
 

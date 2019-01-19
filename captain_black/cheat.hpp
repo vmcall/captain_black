@@ -21,7 +21,7 @@ namespace bdo
 		void handle_loop();
 
 		void handle_code_patches();
-		void handle_object_patches();
+		void handle_field_effect_patches();
 		void handle_local_patches();
 
 		std::byte*			base();

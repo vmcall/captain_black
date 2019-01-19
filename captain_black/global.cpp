@@ -53,3 +53,8 @@ void* __fastcall bdo::global::gettop_hook(std::int64_t state)
 
 	return bdo::global::gettop_original(state);
 }
+
+HRESULT __stdcall bdo::global::present_hook(IDXGISwapChain* swapchain_pointer, UINT sync_interval, UINT flags)
+{
+	return bdo::global::present_original(swapchain_pointer, sync_interval, flags);
+}

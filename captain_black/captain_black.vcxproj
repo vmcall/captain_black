@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -163,6 +163,7 @@
     <ClCompile Include="Minhook\src\HDE\hde64.c" />
     <ClCompile Include="Minhook\src\hook.c" />
     <ClCompile Include="Minhook\src\trampoline.c" />
+    <ClCompile Include="steam_overlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.hpp" />
@@ -183,8 +184,10 @@
     <ClInclude Include="Minhook\src\trampoline.h" />
     <ClInclude Include="misc.hpp" />
     <ClInclude Include="native_thread.hpp" />
+    <ClInclude Include="steam_overlay.hpp" />
     <ClInclude Include="system_variable.hpp" />
     <ClInclude Include="variable_container.hpp" />
+    <ClInclude Include="vtable_hook.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
