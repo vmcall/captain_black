@@ -4,13 +4,21 @@
 #include <windows.h>
 #include <map>
 
+#include "vtable.hpp"
+
 class vtable_hook
 {
 public:
-	vtable_hook(std::uintptr_t class_base);
+	explicit vtable_hook(std::uintptr_t class_base) : m_original_vtable(class_base), m_vtable(m_original_vtable)
+	{
+
+	}
+
+	bool hook(std::int32_t index, void* hook);
+	bool restore_table();
 
 private:
-	std::uintptr_t m_class_base;
-	std::size_t m_size;
+	vtable m_vtable;
+	vtable m_original_vtable;
 
 };

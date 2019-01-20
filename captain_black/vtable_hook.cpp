@@ -1,8 +1,18 @@
 #include "vtable_hook.hpp"
 
-vtable_hook::vtable_hook(std::uintptr_t class_base) : m_class_base(class_base)
+bool vtable_hook::hook(std::int32_t index, void* hook)
 {
+	// SANITY CHECK
+	if (index > this->m_vtable.size())
+		return;
 
+	*this->m_vtable.get(index) = hook;
+}
 
-	// CALCULATE SIZE
+bool vtable_hook::restore_table()
+{
+	for (size_t i = 0; i < this->m_vtable.size(); i++)
+	{
+		*this->m_vtable.entries().at(i) = this->m_original_vtable.functions().at(i);
+	}
 }
