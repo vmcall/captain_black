@@ -5,6 +5,7 @@
 bdo::cheat bdo::global::cheat = {};
 //bdo::engine::lua::do_string_t bdo::global::do_string_original = nullptr;
 bdo::engine::lua::gettop_t bdo::global::gettop_original = nullptr;
+bdo::global::present_t bdo::global::present_original = nullptr;
 
 bool bdo::global::run_lua_from_disk = false;
 
@@ -56,5 +57,6 @@ void* __fastcall bdo::global::gettop_hook(std::int64_t state)
 
 HRESULT __stdcall bdo::global::present_hook(IDXGISwapChain* swapchain_pointer, UINT sync_interval, UINT flags)
 {
+	printf("Present called - %X\n", GetTickCount());
 	return bdo::global::present_original(swapchain_pointer, sync_interval, flags);
 }

@@ -4,6 +4,7 @@
 #include "keyboard_input.hpp"
 #include "lua.hpp"
 #include "command_helper.hpp"
+#include "steam_overlay.hpp"
 
 namespace bdo
 {
@@ -28,12 +29,14 @@ namespace bdo
 		bdo::engine::actor* local_player();
 
 		
-		bdo::engine::lua&		lua();
-		bdo::engine::command_helper& command_helper();
-		native::keyboard_input& keyboard();
+		bdo::engine::lua&				lua();
+		bdo::engine::command_helper&	command_helper();
+		native::keyboard_input&			keyboard();
+		steam::overlay_helper&			overlay_helper();
 
 
 	private:
+		steam::overlay_helper		m_overlay_helper;
 		std::byte*					m_base_address;
 		native::keyboard_input		m_keyboard;
 		bdo::engine::lua			m_lua;

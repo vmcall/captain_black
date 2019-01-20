@@ -4,9 +4,10 @@ bool vtable_hook::hook(std::int32_t index, void* hook)
 {
 	// SANITY CHECK
 	if (index > this->m_vtable.size())
-		return;
+		return false;
 
 	*this->m_vtable.get(index) = hook;
+	return true;
 }
 
 bool vtable_hook::restore_table()

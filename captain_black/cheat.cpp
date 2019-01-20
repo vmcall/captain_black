@@ -30,7 +30,7 @@ void bdo::cheat::start()
 	logger::log_pointer("SelfPlayerActorProxy", this->local_player());
 
 	// SETUP HOOKS
-	//this->setup_hooks();
+	this->setup_hooks();
 
 	// DO CODE PATCHES
 	this->handle_code_patches();
@@ -74,7 +74,7 @@ void bdo::cheat::stop()
 	logger::release();
 
 	// RELEASE HOOKS
-	//this->release_hooks();
+	this->release_hooks();
 }
 
 void bdo::cheat::setup_hooks()
@@ -88,6 +88,11 @@ void bdo::cheat::setup_hooks()
 	MH_CreateHook(this->lua().gettop, bdo::global::gettop_hook, reinterpret_cast<void**>(&bdo::global::gettop_original));
 	MH_EnableHook(this->lua().gettop);
 
+	// HOOK	PRESENT
+	auto present = this->overlay_helper().get_function(8);
+	MH_CreateHook(reinterpret_cast<void*>(present), bdo::global::present_hook, reinterpret_cast<void**>(&bdo::global::present_original));
+	MH_EnableHook(reinterpret_cast<void*>(present));
+
 	logger::log("Hooked..!");
 }
 
@@ -95,6 +100,10 @@ void bdo::cheat::release_hooks()
 {
 	// UNHOOK LUA::DOSTRING
 	MH_DisableHook(this->lua().gettop);
+
+	// UNHOOK PRESENT
+	auto present = this->overlay_helper().get_function(8);
+	MH_DisableHook(reinterpret_cast<void*>(present));
 }
 
 void bdo::cheat::handle_loop()
@@ -184,4 +193,9 @@ bdo::engine::command_helper& bdo::cheat::command_helper()
 native::keyboard_input& bdo::cheat::keyboard()
 {
 	return this->m_keyboard;
+}
+
+steam::overlay_helper& bdo::cheat::overlay_helper()
+{
+	return this->m_overlay_helper;
 }

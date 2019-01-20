@@ -2,8 +2,12 @@
 #include <cstdint>
 #include <d3d11.h>
 
-class overlay_helper
+namespace steam
 {
-	IDXGISwapChain* swapchain() const;
-	std::uintptr_t get_vmt_function(std::int32_t function_index) const;
-};
+	class overlay_helper
+	{
+	public:
+		IDXGISwapChain* swapchain() const;
+		std::uintptr_t get_function(std::int32_t function_index) const;
+	};
+}

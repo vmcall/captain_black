@@ -157,6 +157,9 @@
     <ClCompile Include="command_helper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="global.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="Minhook\src\buffer.c" />
     <ClCompile Include="Minhook\src\HDE\hde32.c" />
@@ -173,6 +176,13 @@
     <ClInclude Include="cheat.hpp" />
     <ClInclude Include="command_helper.hpp" />
     <ClInclude Include="global.hpp" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\stb_rect_pack.h" />
+    <ClInclude Include="ImGui\stb_textedit.h" />
+    <ClInclude Include="ImGui\stb_truetype.h" />
     <ClInclude Include="keyboard_input.hpp" />
     <ClInclude Include="logger.hpp" />
     <ClInclude Include="lua.hpp" />

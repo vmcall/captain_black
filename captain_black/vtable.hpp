@@ -27,7 +27,7 @@ public:
 	vtable::entry_list_t& entries() noexcept;
 
 	using function_list_t = std::vector<void*>;
-	vtable::entry_list_t& functions() noexcept;
+	vtable::function_list_t& functions() noexcept;
 
 	std::uintptr_t& class_base() noexcept;
 
@@ -35,6 +35,6 @@ public:
 
 private:
 	vtable::entry_list_t m_entries;
-	vtable::entry_list_t m_functions;
+	vtable::function_list_t m_functions;
 	std::uintptr_t m_class_base;
 };
