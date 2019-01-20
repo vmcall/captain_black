@@ -2185,7 +2185,8 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
 
 static unsigned int stb_decompress_length(unsigned char *input)
 {
-    return (input[8] << 24) + (input[9] << 16) + (input[10] << 8) + input[11];
+#pragma warning(suppress:4211)
+	return (input[8] << 24) + (input[9] << 16) + (input[10] << 8) + input[11];
 }
 
 static unsigned char *stb__barrier, *stb__barrier2, *stb__barrier3, *stb__barrier4;
@@ -2262,7 +2263,8 @@ static unsigned int stb_adler32(unsigned int adler32, unsigned char *buffer, uns
 
 static unsigned int stb_decompress(unsigned char *output, unsigned char *i, unsigned int length)
 {
-    unsigned int olen;
+#pragma warning(suppress:4211)
+	unsigned int olen;
     if (stb__in4(0) != 0x57bC0000) return 0;
     if (stb__in4(4) != 0)          return 0; // error! stream is > 4GB
     olen = stb_decompress_length(i);
@@ -2393,5 +2395,6 @@ static const char proggy_clean_ttf_compressed_data_base85[11980+1] =
 
 static const char* GetDefaultCompressedFontDataTTFBase85()
 {
-    return proggy_clean_ttf_compressed_data_base85;
+#pragma warning(suppress:4211)
+	return proggy_clean_ttf_compressed_data_base85;
 }

@@ -46,19 +46,20 @@ void bdo::cheat::start()
 	while (!this->keyboard().pressed(VK_END, false))
 	{
 		// HANDLE ITERATIVE PATCHES
-		this->handle_loop();
-
-		// LOOT ALL
-		//if (this->keyboard().pressed(VK_XBUTTON1, false))
-		//{
-		//	reinterpret_cast<void*(__fastcall*)()>(0x140649B10)();
-		//}
-
-		// TEST:
-		if (this->keyboard().pressed(VK_HOME, true))
-		{
-			global::run_lua_from_disk = true;
-		}
+		
+		// this->handle_loop();
+		// 
+		// // LOOT ALL
+		// //if (this->keyboard().pressed(VK_XBUTTON1, false))
+		// //{
+		// //	reinterpret_cast<void*(__fastcall*)()>(0x140649B10)();
+		// //}
+		// 
+		// // TEST:
+		// if (this->keyboard().pressed(VK_HOME, true))
+		// {
+		// 	global::run_lua_from_disk = true;
+		// }
 
 		// SLEEP
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -77,6 +78,11 @@ void bdo::cheat::stop()
 	this->release_hooks();
 }
 
+LRESULT CALLBACK DXGIMsgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
 void bdo::cheat::setup_hooks()
 {
 	logger::log("Hooking...");
@@ -89,7 +95,10 @@ void bdo::cheat::setup_hooks()
 	MH_EnableHook(this->lua().gettop);
 
 	// HOOK	PRESENT
-	auto present = this->overlay_helper().get_function(8);
+	auto present = this->overlay_helper().get_present();
+
+	logger::log_pointer("present", reinterpret_cast<void*>(present));
+	//logger::log_pointer("pSwapChain", pSwapChain);
 	MH_CreateHook(reinterpret_cast<void*>(present), bdo::global::present_hook, reinterpret_cast<void**>(&bdo::global::present_original));
 	MH_EnableHook(reinterpret_cast<void*>(present));
 
@@ -102,7 +111,7 @@ void bdo::cheat::release_hooks()
 	MH_DisableHook(this->lua().gettop);
 
 	// UNHOOK PRESENT
-	auto present = this->overlay_helper().get_function(8);
+	auto present = this->overlay_helper().get_present();
 	MH_DisableHook(reinterpret_cast<void*>(present));
 }
 
