@@ -47,19 +47,19 @@ void bdo::cheat::start()
 	{
 		// HANDLE ITERATIVE PATCHES
 		
-		// this->handle_loop();
-		// 
-		// // LOOT ALL
-		// //if (this->keyboard().pressed(VK_XBUTTON1, false))
-		// //{
-		// //	reinterpret_cast<void*(__fastcall*)()>(0x140649B10)();
-		// //}
-		// 
-		// // TEST:
-		// if (this->keyboard().pressed(VK_HOME, true))
-		// {
-		// 	global::run_lua_from_disk = true;
-		// }
+		this->handle_loop();
+		
+		// LOOT ALL
+		//if (this->keyboard().pressed(VK_XBUTTON1, false))
+		//{
+		//	reinterpret_cast<void*(__fastcall*)()>(0x140649B10)();
+		//}
+		
+		// TEST:
+		if (this->keyboard().pressed(VK_HOME, true))
+		{
+			global::run_lua_from_disk = true;
+		}
 
 		// SLEEP
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
