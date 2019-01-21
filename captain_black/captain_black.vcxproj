@@ -154,7 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cheat.cpp" />
+    <ClCompile Include="captain.cpp" />
     <ClCompile Include="command_helper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="global.cpp" />
@@ -167,6 +167,7 @@
     <ClCompile Include="Minhook\src\HDE\hde64.c" />
     <ClCompile Include="Minhook\src\hook.c" />
     <ClCompile Include="Minhook\src\trampoline.c" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="steam_overlay.cpp" />
     <ClCompile Include="vtable.cpp" />
     <ClCompile Include="vtable_hook.cpp" />
@@ -174,7 +175,8 @@
   <ItemGroup>
     <ClInclude Include="actor.hpp" />
     <ClInclude Include="anticheat.hpp" />
-    <ClInclude Include="cheat.hpp" />
+    <ClInclude Include="cache.hpp" />
+    <ClInclude Include="captain.hpp" />
     <ClInclude Include="command_helper.hpp" />
     <ClInclude Include="global.hpp" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -197,6 +199,8 @@
     <ClInclude Include="Minhook\src\trampoline.h" />
     <ClInclude Include="misc.hpp" />
     <ClInclude Include="native_thread.hpp" />
+    <ClInclude Include="renderer.hpp" />
+    <ClInclude Include="settings.hpp" />
     <ClInclude Include="steam_overlay.hpp" />
     <ClInclude Include="system_variable.hpp" />
     <ClInclude Include="variable_container.hpp" />

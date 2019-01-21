@@ -3,7 +3,7 @@
 #include "system_variable.hpp"
 #include <Windows.h>
 
-namespace bdo::engine
+namespace engine
 {
 	struct pa_container
 	{
@@ -16,19 +16,22 @@ namespace bdo::engine
 	public:
 		inline container_wrapper(pa_container* container) : m_container(container), m_variables()
 		{
-			constexpr auto base_offset = offsetof(bdo::engine::pa_container, variables);
+			constexpr auto base_offset = offsetof(engine::pa_container, variables);
 
 			for (auto index = 0; !IsBadReadPtr(this->m_container->variables[index].overload, 1); ++index)
 			{
 				member current_member = {};
-				current_member.offset = static_cast<std::uint64_t>(base_offset) + index * sizeof(bdo::engine::system_variable) + offsetof(bdo::engine::system_variable, value);
-				current_member.type = bdo::engine::type::t_int64;
+				current_member.offset = static_cast<std::uint64_t>(base_offset) + index * sizeof(engine::system_variable) + offsetof(engine::system_variable, value);
+				current_member.type = engine::type::t_int64;
 
 				this->m_variables.emplace(this->m_container->variables[index].name, current_member);
 			}
 		}
 
-		const variable_array& variables();
+		inline const variable_array& variables()
+		{
+			return this->m_variables;
+		}
 
 		template <class T>
 		T* get(const std::string& name)

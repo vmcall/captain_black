@@ -3,7 +3,7 @@
 #include "misc.hpp"
 #include <cstdint>
 
-namespace bdo::engine
+namespace engine
 {
 	struct actor
 	{

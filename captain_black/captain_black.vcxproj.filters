@@ -25,18 +25,24 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{5377b2f1-da4c-452e-99c9-3e809f049395}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Cheat">
+      <UniqueIdentifier>{693e5917-5acc-43d2-8859-6a1ad2e9f621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helper">
+      <UniqueIdentifier>{de2968d1-d655-4c3c-ab1f-75581cf41c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cheat">
+      <UniqueIdentifier>{66d1277a-f080-42b3-8330-900088b6178e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper">
+      <UniqueIdentifier>{84c74ea1-c095-4bd8-bf69-2af6b9e0b63e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{0532f094-60b2-4ece-9baf-c91ec363fde3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cheat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="global.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minhook\src\buffer.c">
@@ -54,18 +60,6 @@
     <ClCompile Include="Minhook\src\HDE\hde64.c">
       <Filter>MinHook</Filter>
     </ClCompile>
-    <ClCompile Include="command_helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="steam_overlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vtable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vtable_hook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -75,23 +69,32 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="command_helper.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Source Files\Cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="steam_overlay.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="vtable.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="vtable_hook.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="captain.cpp">
+      <Filter>Source Files\Cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cheat.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="global.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="native_thread.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="logger.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="keyboard_input.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Minhook\include\MinHook.h">
       <Filter>MinHook</Filter>
     </ClInclude>
@@ -116,9 +119,6 @@
     <ClInclude Include="Minhook\src\HDE\table64.h">
       <Filter>MinHook</Filter>
     </ClInclude>
-    <ClInclude Include="lua.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="system_variable.hpp">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -136,15 +136,6 @@
     </ClInclude>
     <ClInclude Include="command_helper.hpp">
       <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="steam_overlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vtable_hook.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vtable.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>ImGui</Filter>
@@ -166,6 +157,42 @@
     </ClInclude>
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="global.hpp">
+      <Filter>Header Files\Cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard_input.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="lua.hpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="native_thread.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="steam_overlay.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="vtable.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="vtable_hook.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.hpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="captain.hpp">
+      <Filter>Header Files\Cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.hpp">
+      <Filter>Header Files\Cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="cache.hpp">
+      <Filter>Header Files\Cheat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

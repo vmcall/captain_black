@@ -3,23 +3,25 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx11.h"
 
-bdo::cheat bdo::global::cheat = {};
-//bdo::engine::lua::do_string_t bdo::global::do_string_original = nullptr;
-bdo::engine::lua::gettop_t bdo::global::gettop_original = nullptr;
-bdo::global::present_t bdo::global::present_original = nullptr;
+captain global::cpt = {};
+renderer global::menu = {};
+settings global::options = {};
+//engine::lua::do_string_t global::do_string_original = nullptr;
+engine::lua::gettop_t global::gettop_original = nullptr;
+global::present_t global::present_original = nullptr;
 
-bool bdo::global::run_lua_from_disk = false;
+bool global::run_lua_from_disk = false;
 
 //
 //
-//void* __fastcall bdo::global::do_string_hook(std::int64_t state, const char* command, std::int64_t length)
+//void* __fastcall global::do_string_hook(std::int64_t state, const char* command, std::int64_t length)
 //{
 //	if (state && command)
 //	{
 //		if (!dump)
 //		{
 //			constexpr auto dump_command = "dofile('D:/BDO/Extract_Tables_Globals.lua')";
-//			auto result = bdo::global::do_string_original(state, dump_command, sizeof(dump_command));
+//			auto result = global::do_string_original(state, dump_command, sizeof(dump_command));
 //			printf("Dumped! - %p\n", result);
 //			dump = true;
 //		}
@@ -27,12 +29,12 @@ bool bdo::global::run_lua_from_disk = false;
 //		printf("[lua::do_string] %s - (%p)\n", command, reinterpret_cast<void*>(state));
 //	}
 //
-//	return bdo::global::do_string_original(state, command, length);
+//	return global::do_string_original(state, command, length);
 //}
 
 bool running_script = false;
 
-void* __fastcall bdo::global::gettop_hook(std::int64_t state)
+void* __fastcall global::gettop_hook(std::int64_t state)
 {
 	if (state)
 	{
@@ -44,7 +46,7 @@ void* __fastcall bdo::global::gettop_hook(std::int64_t state)
 			running_script = true;
 
 			constexpr auto dump_command = "dofile(\"D:/BDO/test.lua\")";
-			auto result = bdo::global::cheat.lua().do_string(state, dump_command, strlen(dump_command));
+			auto result = global::cpt.lua().do_string(state, dump_command, strlen(dump_command));
 			printf("Dumped! - %p\n", result);
 
 			running_script = false;
@@ -53,33 +55,30 @@ void* __fastcall bdo::global::gettop_hook(std::int64_t state)
 
 	}
 
-	return bdo::global::gettop_original(state);
+	return global::gettop_original(state);
 }
 
-bool should_initialise = true;
-ID3D11RenderTargetView* render_target_view = nullptr;
-HWND window_handle = NULL;
-HRESULT __stdcall bdo::global::present_hook(IDXGISwapChain* swapchain_pointer, UINT sync_interval, UINT flags)
+HRESULT __stdcall global::present_hook(IDXGISwapChain* swapchain_pointer, UINT sync_interval, UINT flags)
 {
-	printf("Present called - %X\n", GetTickCount());
+	//printf("Present called - %X\n", GetTickCount());
 
 	ID3D11Device* device;
 	ID3D11DeviceContext *device_context;
 	swapchain_pointer->GetDevice(__uuidof(device), reinterpret_cast<void**>(&device));
 	device->GetImmediateContext(&device_context);
 
-	if (should_initialise)
+	if (!global::menu.initialised())
 	{
-		window_handle = FindWindowW(L"BlackDesertWindowClass", NULL);
+		global::menu.window_handle() = FindWindowW(L"BlackDesertWindowClass", NULL);
 
 		ID3D11Texture2D* render_target_texture = nullptr;
 		if (SUCCEEDED(swapchain_pointer->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&render_target_texture))))
 		{
-			device->CreateRenderTargetView(render_target_texture, NULL, &render_target_view);
+			device->CreateRenderTargetView(render_target_texture, NULL, &global::menu.render_target_view());
 			render_target_texture->Release();
 		}
 
-		ImGui_ImplDX11_Init(window_handle, device, device_context);
+		ImGui_ImplDX11_Init(global::menu.window_handle(), device, device_context);
 		ImGui_ImplDX11_CreateDeviceObjects();
 
 #pragma region ImGui Theme
@@ -141,26 +140,20 @@ HRESULT __stdcall bdo::global::present_hook(IDXGISwapChain* swapchain_pointer, U
 		io.Fonts->AddFontDefault();
 #pragma endregion
 
-		should_initialise = false;
+		global::menu.initialised() = true;
 	}
 
-	device_context->OMSetRenderTargets(1, &render_target_view, NULL);
+	device_context->OMSetRenderTargets(1, &global::menu.render_target_view(), NULL);
 
 	ImGui_ImplDX11_NewFrame();
 
+	// RENDER MENU
 
 	// UPDATE IO
-	POINT mouse_pos;
-	GetCursorPos(&mouse_pos);
-	ScreenToClient(window_handle, &mouse_pos);
+	global::menu.update_io();
 
-	// SAVE MOUSE INFO
-	ImGui::GetIO().MousePos.x = static_cast<float>(mouse_pos.x);
-	ImGui::GetIO().MousePos.y = static_cast<float>(mouse_pos.y);
-	ImGui::GetIO().MouseDown[0] = GetAsyncKeyState(VK_LBUTTON);
-
-	ImGui::Begin("CaptainBlack v1");
-	ImGui::End();
+	if (global::options.show_menu)	
+		global::menu.render();
 
 	// MENU
 	//if (global::cheat.keyboard().pressed(VK_INSERT, true))
@@ -174,5 +167,19 @@ HRESULT __stdcall bdo::global::present_hook(IDXGISwapChain* swapchain_pointer, U
 
 	ImGui::Render();
 
-	return bdo::global::present_original(swapchain_pointer, sync_interval, flags);
+	// HANDLE CHEAT
+	global::cpt.handle_loop();
+
+
+	if (global::cpt.keyboard().pressed(VK_INSERT, true))
+	{
+		global::options.show_menu = !global::options.show_menu;
+	}
+
+	if (global::cpt.keyboard().pressed(VK_END, true))
+	{
+		global::cpt.stop();
+	}
+
+	return global::present_original(swapchain_pointer, sync_interval, flags);
 }

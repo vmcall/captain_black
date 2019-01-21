@@ -1,8 +1,6 @@
 #pragma once
 
-namespace bdo::anticheat
+namespace anticheat
 {
 	constexpr auto speedcap_function_offset = 0x8B50F0;
-
-
 }

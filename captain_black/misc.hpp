@@ -1,6 +1,6 @@
 #pragma once
 
-namespace bdo::engine
+namespace engine
 {
 	struct vector3d
 	{

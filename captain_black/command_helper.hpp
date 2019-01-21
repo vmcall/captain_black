@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace bdo::engine
+namespace engine
 {
 	struct struct_text_arg
 	{
@@ -15,7 +15,7 @@ namespace bdo::engine
 
 	struct command_args
 	{
-		struct_text_arg *text_argument;
+		engine::struct_text_arg *text_argument;
 		std::int64_t struct_end;
 		std::int8_t pad[0x50];
 	};
@@ -30,7 +30,7 @@ namespace bdo::engine
 		template <std::int64_t function_address, size_t N>
 		void* do_command(const wchar_t(&message)[N], std::int32_t pad)
 		{
-			struct_text_arg text_arg = {};
+			engine::struct_text_arg text_arg = {};
 			text_arg.some_size = 7;
 			memcpy(text_arg.value, message, sizeof(message));
 

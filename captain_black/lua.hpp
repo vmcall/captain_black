@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace bdo::engine
+namespace engine
 {
 	class lua
 	{
@@ -15,8 +15,8 @@ namespace bdo::engine
 		explicit lua(std::uint64_t base_address) noexcept : m_base_address(base_address)
 		{
 			// CACHE FUNCTION POINTERS
-			this->do_string = reinterpret_cast<bdo::engine::lua::do_string_t>(base_address + do_string_offset);
-			this->gettop = reinterpret_cast<bdo::engine::lua::gettop_t>(base_address + gettop_offset);
+			this->do_string = reinterpret_cast<engine::lua::do_string_t>(base_address + do_string_offset);
+			this->gettop = reinterpret_cast<engine::lua::gettop_t>(base_address + gettop_offset);
 		}
 
 		using do_string_t = void*(__fastcall*)(std::int64_t state, const char* command, std::int64_t length);

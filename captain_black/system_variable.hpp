@@ -1,7 +1,8 @@
 #pragma once
 #include <map>
+#include <string>
 
-namespace bdo::engine
+namespace engine
 {
 	enum type : std::uint8_t
 	{
@@ -15,7 +16,7 @@ namespace bdo::engine
 	struct member
 	{
 		std::uint64_t offset;
-		bdo::engine::type type;
+		engine::type type;
 	};
 
 	using variable_array = std::map<std::string, member>;
