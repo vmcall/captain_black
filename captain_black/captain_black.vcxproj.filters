@@ -191,8 +191,5 @@
     <ClInclude Include="settings.hpp">
       <Filter>Header Files\Cheat</Filter>
     </ClInclude>
-    <ClInclude Include="cache.hpp">
-      <Filter>Header Files\Cheat</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

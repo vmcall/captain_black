@@ -175,7 +175,6 @@
   <ItemGroup>
     <ClInclude Include="actor.hpp" />
     <ClInclude Include="anticheat.hpp" />
-    <ClInclude Include="cache.hpp" />
     <ClInclude Include="captain.hpp" />
     <ClInclude Include="command_helper.hpp" />
     <ClInclude Include="global.hpp" />

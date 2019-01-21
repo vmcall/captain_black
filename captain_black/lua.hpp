@@ -9,8 +9,8 @@ namespace engine
 	public:
 
 		// OFFSETS
-		static constexpr auto do_string_offset = 0xF23390;
-		static constexpr auto gettop_offset = 0x1755130;
+		static constexpr auto do_string_offset = 0xF233B0;
+		static constexpr auto gettop_offset = 0x1755140;
 
 		explicit lua(std::uint64_t base_address) noexcept : m_base_address(base_address)
 		{

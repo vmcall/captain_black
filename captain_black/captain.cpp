@@ -34,8 +34,6 @@ void captain::start()
 
 	// DO CODE PATCHES
 	this->handle_code_patches();
-
-	this->cache_field_effects();
 }
 
 void captain::stop()
@@ -100,7 +98,7 @@ void captain::handle_code_patches()
 	logger::log("Patched..!");
 }
 
-void captain::cache_field_effects()
+void captain::handle_field_effects()
 {
 	logger::log("Dumping FieldEffectInfo...");
 
@@ -108,20 +106,23 @@ void captain::cache_field_effects()
 	auto raw_container = reinterpret_cast<engine::pa_container*>(this->base() + field_effect_info_offset);
 	auto field_effect_info = engine::container_wrapper(raw_container);
 
-	for (auto entry : field_effect_info.variables())
-	{
-		printf("[%04llX] %s\n", entry.second.offset, entry.first.c_str());
-	}
+	//for (auto entry : field_effect_info.variables())
+	//{
+	//	printf("[%04llX] %s\n", entry.second.offset, entry.first.c_str());
+	//}
 
 	logger::log("Dumped..!");
-
-	logger::log("Patching ObjectSceneInfo->cam_maxDistanceFromCharacter");
+	logger::log("Patching...");
 
 	// CAMERA DISTANCE
-	this->cache().cam_max_distance = field_effect_info.get<float>("cam_maxDistanceFromCharacter");
+	if (global::options.camera_distance)
+		*field_effect_info.get<float>("cam_maxDistanceFromCharacter") = 9999.f;
 	
 	// STEP HEIGHT
-	this->cache().step_offset = field_effect_info.get<float>("ch_stepOffset");
+	if (global::options.step)
+		*field_effect_info.get<float>("ch_stepOffset") = 9999.f;
+
+	logger::log("Patched..!");
 
 	// CLIFF LEAN
 	//*object_scene_info.get<float>("_cc_nearCliffCheckDistance") = 0.f;
@@ -147,20 +148,7 @@ void captain::handle_local_patches()
 		constexpr auto max_movement = std::numeric_limits<std::int32_t>::max();
 		if (global::options.movement_speed)
 			this->local_player()->movement_speed = max_movement;
-
-		// STEP
-		if (global::options.step)
-			*this->cache().step_offset = 9999.f;
-
-		// CAMERA
-		if (global::options.camera_distance)
-			*this->cache().cam_max_distance = 9999.f;
 	}
-}
-
-cache_t& captain::cache()
-{
-	return this->m_cache;
 }
 
 std::byte* captain::base()

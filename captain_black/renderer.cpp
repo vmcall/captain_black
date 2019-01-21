@@ -22,8 +22,25 @@ void renderer::render()
 	ImGui::Checkbox("Attack speed hack", &global::options.attack_speed);
 	ImGui::Checkbox("Movement speed hack", &global::options.movement_speed);
 	ImGui::Checkbox("Cast speed hack", &global::options.cast_speed);
+
+	ImGui::Separator();
+
+	ImGui::Text("Field effects");
 	ImGui::Checkbox("Step", &global::options.step);
 	ImGui::Checkbox("Camera distance", &global::options.camera_distance);
+
+	if (ImGui::Button("Patch"))
+	{
+		global::cpt.handle_field_effects();
+	}
+
+	ImGui::Separator();
+	ImGui::Text("Lua");
+
+	if (ImGui::Button("Run test.lua"))
+	{
+		global::run_lua_from_disk = true;
+	}
 
 	ImGui::End();
 }

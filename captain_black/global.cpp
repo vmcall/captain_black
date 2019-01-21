@@ -40,14 +40,13 @@ void* __fastcall global::gettop_hook(std::int64_t state)
 	{
 		//printf("[lua::gettop] %p\n", state);
 		
-
 		if (global::run_lua_from_disk && !running_script)
 		{
 			running_script = true;
 
 			constexpr auto dump_command = "dofile(\"D:/BDO/test.lua\")";
 			auto result = global::cpt.lua().do_string(state, dump_command, strlen(dump_command));
-			printf("Dumped! - %p\n", result);
+			printf("Running - %p\n", result);
 
 			running_script = false;
 			global::run_lua_from_disk = false;
