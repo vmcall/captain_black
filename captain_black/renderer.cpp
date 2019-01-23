@@ -25,13 +25,13 @@ void renderer::render()
 
 	ImGui::Separator();
 
-	ImGui::Text("Field effects");
+	ImGui::Text("Object scene info");
 	ImGui::Checkbox("Step", &global::options.step);
 	ImGui::Checkbox("Camera distance", &global::options.camera_distance);
 
 	if (ImGui::Button("Patch"))
 	{
-		global::cpt.handle_field_effects();
+		global::cpt.handle_object_scene_info();
 	}
 
 	ImGui::Separator();

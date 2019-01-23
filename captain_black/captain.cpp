@@ -98,13 +98,13 @@ void captain::handle_code_patches()
 	logger::log("Patched..!");
 }
 
-void captain::handle_field_effects()
+void captain::handle_object_scene_info()
 {
-	logger::log("Dumping FieldEffectInfo...");
+	logger::log("Dumping ObjectSceneInfo...");
 
-	constexpr auto field_effect_info_offset = 0x3244370;
-	auto raw_container = reinterpret_cast<engine::pa_container*>(this->base() + field_effect_info_offset);
-	auto field_effect_info = engine::container_wrapper(raw_container);
+	constexpr auto object_scene_info_offset = 0x327EF30;
+	auto raw_container = reinterpret_cast<engine::pa_container*>(this->base() + object_scene_info_offset);
+	auto object_scene_info = engine::container_wrapper(raw_container);
 
 	//for (auto entry : field_effect_info.variables())
 	//{
@@ -116,11 +116,11 @@ void captain::handle_field_effects()
 
 	// CAMERA DISTANCE
 	if (global::options.camera_distance)
-		*field_effect_info.get<float>("cam_maxDistanceFromCharacter") = 9999.f;
+		*object_scene_info.get<float>("cam_maxDistanceFromCharacter") = 9999.f;
 	
 	// STEP HEIGHT
 	if (global::options.step)
-		*field_effect_info.get<float>("ch_stepOffset") = 9999.f;
+		*object_scene_info.get<float>("ch_stepOffset") = 9999.f;
 
 	logger::log("Patched..!");
 

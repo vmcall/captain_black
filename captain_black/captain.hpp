@@ -20,7 +20,7 @@ public:
 	void handle_loop();
 
 	void handle_code_patches();
-	void handle_field_effects();
+	void handle_object_scene_info();
 	void handle_local_patches();
 
 	std::byte*				base();

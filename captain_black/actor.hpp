@@ -7,7 +7,7 @@ namespace engine
 {
 	struct actor
 	{
-		static constexpr auto local_offset = 0x33E4058;
+		static constexpr auto local_offset = 0x341FE08;
 
 		char pad_0000[104];					// 000
 		wchar_t* name;						// 068
