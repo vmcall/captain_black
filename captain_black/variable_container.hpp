@@ -7,7 +7,7 @@ namespace engine
 {
 	struct pa_container
 	{
-		char pad_0000[0x110];			// 000
+		char pad_0000[0x130];			// 000
 		system_variable variables[1];	// 110
 	};
 
