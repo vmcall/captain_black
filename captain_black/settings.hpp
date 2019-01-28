@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <numeric>
 
 struct settings
 {
@@ -8,4 +10,5 @@ struct settings
 	bool attack_speed;
 	bool cast_speed;
 	bool step;
+	bool speed_low;
 };

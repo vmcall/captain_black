@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "logger.hpp"
 #include <windows.h>
 #include <iostream>

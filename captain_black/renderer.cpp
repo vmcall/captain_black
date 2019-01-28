@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "global.hpp"
 #include "renderer.hpp"
 #include "ImGui/imgui.h"
@@ -22,6 +23,8 @@ void renderer::render()
 	ImGui::Checkbox("Attack speed hack", &global::options.attack_speed);
 	ImGui::Checkbox("Movement speed hack", &global::options.movement_speed);
 	ImGui::Checkbox("Cast speed hack", &global::options.cast_speed);
+	ImGui::Checkbox("Low speed", &global::options.speed_low);
+	//ImGui::SliderInt("Value", &global::options.attack_speed_value, 0, std::numeric_limits<std::int32_t>::max());
 
 	ImGui::Separator();
 

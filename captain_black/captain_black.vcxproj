@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="captain.cpp" />
     <ClCompile Include="command_helper.cpp" />
+    <ClCompile Include="directx.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -175,8 +176,10 @@
   <ItemGroup>
     <ClInclude Include="actor.hpp" />
     <ClInclude Include="anticheat.hpp" />
+    <ClInclude Include="cache.hpp" />
     <ClInclude Include="captain.hpp" />
     <ClInclude Include="command_helper.hpp" />
+    <ClInclude Include="directx.hpp" />
     <ClInclude Include="global.hpp" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="steam_overlay.hpp" />
     <ClInclude Include="system_variable.hpp" />
     <ClInclude Include="variable_container.hpp" />
+    <ClInclude Include="vector.hpp" />
     <ClInclude Include="vtable.hpp" />
     <ClInclude Include="vtable_hook.hpp" />
   </ItemGroup>

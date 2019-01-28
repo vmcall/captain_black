@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "vtable.hpp"
 #include <windows.h>
 

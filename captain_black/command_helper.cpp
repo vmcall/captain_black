@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "command_helper.hpp"
 #include "logger.hpp"
 

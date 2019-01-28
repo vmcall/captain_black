@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "vtable_hook.hpp"
 
 bool vtable_hook::hook(std::int32_t index, void* hook)

@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "steam_overlay.hpp"
 #include <cstddef>
 #include "logger.hpp"
