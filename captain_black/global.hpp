@@ -31,9 +31,9 @@ namespace global
 	extern HRESULT __stdcall present_hook(IDXGISwapChain* swapchain_pointer, UINT sync_interval, UINT flags);
 
 	// DRAW INDEXED
-	using draw_indexed_t = void(__stdcall*)(ID3D11DeviceContext* context, UINT index_count, UINT start_index_location, INT base_vertex_location);
-	extern draw_indexed_t draw_indexed_original;
-	extern void __stdcall draw_indexed_hook(ID3D11DeviceContext* context, UINT index_count, UINT start_index_location, INT base_vertex_location);
+	using draw_indexed_instanced_t = void(__stdcall*)(ID3D11DeviceContext* context, UINT index_count_per_instance, UINT instance_count, UINT start_index_location, INT base_vertex_location, UINT start_instance_location);
+	extern draw_indexed_instanced_t draw_indexed_instanced_original;
+	extern void __stdcall draw_indexed_instanced_hook(ID3D11DeviceContext* context, UINT index_count_per_instance, UINT instance_count, UINT start_index_location, INT base_vertex_location, UINT start_instance_location);
 
 	// CREATE QUERY
 	using create_query_t = void(__stdcall*)(ID3D11Device* device, const D3D11_QUERY_DESC* query_description, ID3D11Query** query);

@@ -1,6 +1,7 @@
 #include "directx.hpp"
 #include <d3dcompiler.h>
 #include <iostream>
+#include <fstream>
 
 ID3D11DepthStencilState* directx::g_depth_stencil_states[static_cast<int>(depth_state::_depth_count)] = {};
 
@@ -32,12 +33,12 @@ bool directx::create_shader(float r, float g, float b, ID3D11PixelShader** shade
 
 		"float4 main( VS_OUT input ) : SV_Target"
 		"{"
-		" float4 fake;"
-		" fake.a = 1.0f;"
-		" fake.r = %f;"
-		" fake.g = %f;"
-		" fake.b = %f;"
-		" return fake;"
+		" float4 model;"
+		" model.a = 1.0f;"
+		" model.r = %f;"
+		" model.g = %f;"
+		" model.b = %f;"
+		" return model;"
 		"}";
 
 	char shader_data[250];
@@ -53,6 +54,14 @@ bool directx::create_shader(float r, float g, float b, ID3D11PixelShader** shade
 		return false;
 
 	auto created = this->device()->CreatePixelShader((DWORD*)blob->GetBufferPointer(), blob->GetBufferSize(), NULL, shader);
+
+
+	//char file_name[25];
+	//sprintf_s(file_name, "shader_%.1f%.1f%.1f.bin", r, g, b);
+	//
+	//std::ofstream myfile;
+	//myfile.open(file_name, std::ios::out | std::ios::app | std::ios::binary);
+	//myfile.write(reinterpret_cast<const char*>(blob->GetBufferPointer()), blob->GetBufferSize());
 
 	return !FAILED(created);
 }

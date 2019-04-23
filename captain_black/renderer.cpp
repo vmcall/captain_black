@@ -20,11 +20,18 @@ void renderer::render()
 {
 	ImGui::Begin("Captain Black");
 	
+	ImGui::Text("Local player");
 	ImGui::Checkbox("Attack speed hack", &global::options.attack_speed);
 	ImGui::Checkbox("Movement speed hack", &global::options.movement_speed);
 	ImGui::Checkbox("Cast speed hack", &global::options.cast_speed);
 	ImGui::Checkbox("Low speed", &global::options.speed_low);
 	//ImGui::SliderInt("Value", &global::options.attack_speed_value, 0, std::numeric_limits<std::int32_t>::max());
+
+	ImGui::Separator();
+	ImGui::Text("D3D11 hooks");
+	ImGui::Checkbox("Overwrite model color", &global::options.chams);
+	ImGui::Checkbox("Overwrite occlusion", &global::options.occlusion);
+	ImGui::InputInt("Stride", &global::options.selected_stride, 1, 1000);
 
 	ImGui::Separator();
 

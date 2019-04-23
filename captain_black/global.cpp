@@ -15,7 +15,7 @@ directx global::direct = {};
 
 engine::lua::gettop_t global::gettop_original = nullptr;
 global::present_t global::present_original = nullptr;
-global::draw_indexed_t global::draw_indexed_original = nullptr;
+global::draw_indexed_instanced_t global::draw_indexed_instanced_original = nullptr;
 global::create_query_t global::create_query_original = nullptr;
 
 bool global::run_lua_from_disk = false;
@@ -209,9 +209,9 @@ HRESULT __stdcall global::present_hook(IDXGISwapChain* swapchain_pointer, UINT s
 		rsDesc.CullMode = D3D11_CULL_NONE;
 		global::direct.device()->CreateRasterizerState(&rsDesc, &global::direct.rs_state());
 
-
 		global::direct.create_shader(1.f, 0.2f, 0.2f, &global::direct.crimson_shader());
 		global::direct.create_shader(1.f, 0.6f, 0.0f, &global::direct.yellow_shader());
+
 
 		global::menu.initialised() = true;
 		logger::log("initialised present..!");
@@ -258,41 +258,129 @@ HRESULT __stdcall global::present_hook(IDXGISwapChain* swapchain_pointer, UINT s
 	return global::present_original(swapchain_pointer, sync_interval, flags);
 }
 
-void __stdcall global::draw_indexed_hook(ID3D11DeviceContext* context, UINT index_count, UINT start_index_location, INT base_vertex_location)
+//static bool identfy_draw_call(UINT vertex_offset, UINT vertex_stride, UINT index_offset, UINT index_count)
+//{
+//	// here we go, german
+//	// What are you looking for
+//	// wtf u guys have y as z
+//	// ok look, basically the stride you are looking for from d3d9, is index_count
+//	// match index_count with selected_stride
+//	//if (global::direct)
+//}
+
+void __stdcall global::draw_indexed_instanced_hook(ID3D11DeviceContext* context, UINT index_count_per_instance, UINT instance_count, UINT start_index_location, INT base_vertex_location, UINT start_instance_location)
 {
-	UINT Stride;
-	ID3D11Buffer *veBuffer;
-	UINT veBufferOffset = 0;
-	context->IAGetVertexBuffers(0, 1, &veBuffer, &Stride, &veBufferOffset);
+	//printf("draw called\n");
+	
+	if (!global::options.chams)
+		return global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
+
+	//if (vertex_count == global::options.selected_stride)
+	//{
+	//	global::direct.set_depth_stencil_state(directx::depth_state::disabled);
+	//	context->PSSetShader(global::direct.yellow_shader(), NULL, NULL);
+	//
+	//	global::draw_original(context, vertex_count, start_vertex_vocation);
+	//
+	//	global::direct.set_depth_stencil_state(directx::depth_state::enabled);
+	//	context->PSSetShader(global::direct.crimson_shader(), NULL, NULL);
+	//
+	//	ID3D11ShaderResourceView* shader_resource_view = nullptr;
+	//	context->PSSetShaderResources(0, 1, &shader_resource_view);
+	//}
+
+	//ID3D11Buffer* buffer = nullptr;
+	//UINT buffer_offset = 0;
+	//UINT stride = 0;
+	//context->IAGetVertexBuffers(0, 1, &buffer, &stride, &buffer_offset);
+	//
+	//D3D11_BUFFER_DESC desc;
+	//buffer->GetDesc(&desc);
+
+	//if (static_cast<std::int32_t>(index_count_per_instance) != global::options.selected_stride)
+	//	return  global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
+
+	//if (index_count_per_instance < 10 * global::options.selected_stride)
+	//	return global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
 
 
-	if (Stride == 36)
+	//if (index_count_per_instance < 1000)
+	//	return global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
+	//
+	//context->PSSetShader(global::direct.crimson_shader(), NULL, NULL);
+
+	//ID3D11ShaderResourceView* shader_resource_view = nullptr;
+	//context->PSSetShaderResources(0, 1, &shader_resource_view);
+
+	//ID3D11PixelShader* previous_shader = nullptr;
+	//ID3D11ClassInstance* previous_class = nullptr;
+	//UINT previous_num = 0;
+	//context->PSGetShader(&previous_shader, &previous_class, &previous_num);
+	//
+	//bool overwrote = false;
+	//
+	//constexpr std::int32_t player_indexes[] = {
+	//	6204,
+	//	6732,
+	//	6804,
+	//	7068,
+	//	12798
+	//};
+	//
+	//
+	//bool is_valid = false;
+	//for (auto index : player_indexes)
+	//{
+	//	if (index_count_per_instance == index)
+	//	{
+	//		is_valid = true;
+	//		break;
+	//	}
+	//}
+
+	ID3D11Buffer* buffer = nullptr;
+	UINT buffer_offset = 0;
+	UINT stride = 0;
+	context->IAGetVertexBuffers(0, 1, &buffer, &stride, &buffer_offset);
+
+	if (stride == 32)
 	{
 		global::direct.set_depth_stencil_state(directx::depth_state::disabled);
 		context->PSSetShader(global::direct.yellow_shader(), NULL, NULL);
-
-		global::draw_indexed_original(context, index_count, start_index_location, base_vertex_location);
-
+		global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
 		global::direct.set_depth_stencil_state(directx::depth_state::enabled);
 		context->PSSetShader(global::direct.crimson_shader(), NULL, NULL);
-
-		context->PSSetShaderResources(0, 1, &ShaderResourceView);
 	}
-
-	return global::draw_indexed_original(context, index_count, start_index_location, base_vertex_location);
+	//
+	//context->PSSetShader(previous_shader, &previous_class, previous_num);
+	//
+	//
+	//
+	////global::direct.set_depth_stencil_state(directx::depth_state::disabled);
+	////context->PSSetShader(global::direct.yellow_shader(), NULL, NULL);
+	////
+	////global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
+	////
+	////global::direct.set_depth_stencil_state(directx::depth_state::enabled);
+	////context->PSSetShader(global::direct.crimson_shader(), NULL, NULL);
+	////
+	////ID3D11ShaderResourceView* shader_resource_view = nullptr;
+	////context->PSSetShaderResources(0, 1, &shader_resource_view);
+	//if (overwrote)
+	//	return;
+	//
+	
+	return global::draw_indexed_instanced_original(context, index_count_per_instance, instance_count, start_index_location, base_vertex_location, start_instance_location);
 }
 
 void __stdcall global::create_query_hook(ID3D11Device* device, const D3D11_QUERY_DESC* query_description, ID3D11Query** query)
 {
+	if (!global::options.occlusion || query_description->Query != D3D11_QUERY_OCCLUSION)
+		return global::create_query_original(device, query_description, query);
 
-	//if (query_description->Query == D3D11_QUERY_OCCLUSION)
-	//{
-	//	D3D11_QUERY_DESC o_query_desc = CD3D11_QUERY_DESC();
-	//	(&o_query_desc)->MiscFlags = query_description->MiscFlags;
-	//	(&o_query_desc)->Query = D3D11_QUERY_TIMESTAMP;
-	//
-	//	return global::create_query_original(device, &o_query_desc, query);
-	//}
-
+	D3D11_QUERY_DESC o_query_desc = CD3D11_QUERY_DESC();
+	(&o_query_desc)->MiscFlags = query_description->MiscFlags;
+	(&o_query_desc)->Query = D3D11_QUERY_TIMESTAMP;
+	
 	return global::create_query_original(device, query_description, query);
 }

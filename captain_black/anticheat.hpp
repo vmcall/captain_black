@@ -2,5 +2,5 @@
 
 namespace anticheat
 {
-	constexpr auto speedcap_function_offset = 0x8C4360;
+	constexpr auto speedcap_function_offset = 0x8DA1D0;
 }

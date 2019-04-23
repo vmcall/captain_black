@@ -94,7 +94,7 @@
       <Filter>Source Files\Helper</Filter>
     </ClCompile>
     <ClCompile Include="directx.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

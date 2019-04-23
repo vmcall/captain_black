@@ -34,6 +34,19 @@ void captain::start()
 
 	// DO CODE PATCHES
 	this->handle_code_patches();
+
+
+	//while (!this->keyboard().pressed(VK_END, true))
+	//{
+	//	this->handle_loop();
+	//
+	//	if (this->keyboard().pressed(VK_HOME, true))
+	//	{
+	//		this->handle_object_scene_info();
+	//	}
+	//
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	//}
 }
 
 void captain::stop()
@@ -107,19 +120,21 @@ void captain::setup_hooks()
 
 	// GET VTABLE POINTERS
 	auto swapchain_vmt = *reinterpret_cast<void***>(swap_chain);
+	auto context_vmt = *reinterpret_cast<void***>(context);
+	auto device_vmt = *reinterpret_cast<void***>(device);
 
 	// GET FUNCTION POINTERS
 	global::cache.d3d11_present = swapchain_vmt[8];
-	global::cache.d3d11_draw_indexed = swapchain_vmt[12];
-	global::cache.d3d11_create_query = swapchain_vmt[24];
+	global::cache.d3d11_draw_indexed_instanced = context_vmt[20];
+	global::cache.d3d11_create_query = device_vmt[24];
 
 	// HOOK PRESENT
 	MH_CreateHook(global::cache.d3d11_present, global::present_hook, reinterpret_cast<void**>(&global::present_original));
 	MH_EnableHook(global::cache.d3d11_present);
 
-	// HOOK DRAW INDEXED
-	MH_CreateHook(global::cache.d3d11_draw_indexed, global::draw_indexed_hook, reinterpret_cast<void**>(&global::draw_indexed_original));
-	MH_EnableHook(global::cache.d3d11_draw_indexed);
+	// HOOK DRAW INSTANCED
+	MH_CreateHook(global::cache.d3d11_draw_indexed_instanced, global::draw_indexed_instanced_hook, reinterpret_cast<void**>(&global::draw_indexed_instanced_original));
+	MH_EnableHook(global::cache.d3d11_draw_indexed_instanced);
 
 	// HOOK CREATE QUERY
 	MH_CreateHook(global::cache.d3d11_create_query, global::create_query_hook, reinterpret_cast<void**>(&global::create_query_original));
@@ -134,13 +149,9 @@ void captain::release_hooks()
 	// UNHOOK LUA::DOSTRING
 	MH_DisableHook(this->lua().gettop);
 
-	// UNHOOK PRESENT
-	//auto present = this->overlay_helper().get_present();
-	//MH_DisableHook(reinterpret_cast<void*>(present));
-
 	// D3D11
 	MH_DisableHook(global::cache.d3d11_present);
-	MH_DisableHook(global::cache.d3d11_draw_indexed);
+	MH_DisableHook(global::cache.d3d11_draw_indexed_instanced);
 	MH_DisableHook(global::cache.d3d11_create_query);
 }
 
@@ -159,8 +170,16 @@ void captain::handle_code_patches()
 	logger::log_pointer("game::cap_speed", speedcap_function);
 
 	// WRITE RET INSTRUCTION TO PATCH IT :')
-	constexpr auto ret_opcode = 0xC3;
-	*speedcap_function = static_cast<std::byte>(ret_opcode);
+	//constexpr auto ret_opcode = 0xC3;
+	//*speedcap_function = static_cast<std::byte>(ret_opcode);
+
+	// NOP MOV INSTRUCTIONS
+	constexpr auto instruction_offset = 0x89;
+	for (size_t i = 0; i < 7; i++)
+	{
+		*(speedcap_function + instruction_offset + i) = static_cast<std::byte>(0x90);
+		logger::log_pointer("Patching", speedcap_function + instruction_offset + i);
+	}
 
 	logger::log("Patched..!");
 }
@@ -169,7 +188,7 @@ void captain::handle_object_scene_info()
 {
 	logger::log("Dumping ObjectSceneInfo...");
 
-	constexpr auto object_scene_info_offset = 0x327EF30;
+	constexpr auto object_scene_info_offset = 0x32CBA50;
 	auto raw_container = reinterpret_cast<engine::pa_container*>(this->base() + object_scene_info_offset);
 	auto object_scene_info = engine::container_wrapper(raw_container);
 
@@ -196,23 +215,30 @@ void captain::handle_object_scene_info()
 
 void captain::handle_local_patches()
 {
-	if (this->local_player())
+	if (!this->local_player())
+		return;
+
+	if (IsBadWritePtr(this->local_player(), 1))
 	{
-		auto val = global::options.speed_low ? 9999999 : std::numeric_limits<std::int32_t>::max();
+		logger::log("Invalid localplayer!");
+		return;
+	}
 
-		// ATTACK SPEED
-		if (global::options.attack_speed)
-			this->local_player()->attack_speed = val;
+	auto val = global::options.speed_low ? 9999999 : std::numeric_limits<std::int32_t>::max();
 
-		// CAST SPEED
-		if (global::options.cast_speed)
-			this->local_player()->cast_speed = val;
+	// ATTACK SPEEDz½
+	if (global::options.attack_speed)
+		this->local_player()->attack_speed = val;
 
-		// MOVEMENT SPEED
-		constexpr auto max_movement = std::numeric_limits<std::int32_t>::max();
+	// CAST SPEED
+	if (global::options.cast_speed)
+		this->local_player()->casting_speed = val;
+
+	// MOVEMENT SPEED
+	constexpr auto max_movement = std::numeric_limits<std::int32_t>::max();
+	if (this->keyboard().pressed(VK_HOME, true))
 		if (global::options.movement_speed)
 			this->local_player()->movement_speed = max_movement;
-	}
 }
 
 std::byte* captain::base()
